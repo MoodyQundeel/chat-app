@@ -2,7 +2,7 @@ from flask import Flask, send_from_directory, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__, static_folder="frontend/build", static_url_path='')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///images.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///main.db'
 db = SQLAlchemy(app)
 
 

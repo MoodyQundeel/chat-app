@@ -1,8 +1,11 @@
+import { Button, TextField, Box, FormGroup } from "@mui/material"
+import "../css/LogInForm.css"
+
 const LogInForm = () => {
     return (
         <form onSubmit={e => registerUser(e)}>
-            <input type="text" placeholder="Username" id="name"></input>
-            <input type="submit" value="Join"></input>
+            <TextField fullWidth="true" variant="outlined"  label="Name" id="name"></TextField>
+            <Button sx={{ mt: 3 }} variant="contained" type="submit">Join</Button>
         </form>
     )
 }
