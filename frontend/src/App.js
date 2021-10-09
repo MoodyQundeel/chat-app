@@ -1,8 +1,11 @@
-import React from 'react'
-import LogInForm from './components/LogInForm';
+import { React } from 'react'
+import LogInPage from './components/LogInPage';
+import MessageBox from './components/MessageBox'
+import ChatPage from './components/ChatPage'
 
-const App = () => {
-    return <LogInForm />
+const App = (props) => {
+    if (localStorage.getItem("user")) return <ChatPage />
+    else return <LogInPage />;
 }
 
 export default App;
