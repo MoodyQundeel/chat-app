@@ -2,7 +2,7 @@ import { Chip, Avatar } from "@mui/material"
 import "../css/Message.css"
 
 const Message = (props) => {
-    let user = localStorage.getItem('user')
+    let user = sessionStorage.getItem('user')
     console.log(user)
     return (
     <div className="message">

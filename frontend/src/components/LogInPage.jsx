@@ -16,9 +16,13 @@ const handleSubmit = (e) => {
     const name = document.getElementById("name").value
     axios.post('/login', {
         name: name
-      });
-    localStorage.setItem('user', name)
-    window.location.reload()
+      }).then(res => {
+        sessionStorage.setItem('id', res.data.id)
+        sessionStorage.setItem('user', res.data.user)
+      }).then(() => {
+          window.location.reload()
+      })
+    
 }
 
 export default LogInPage

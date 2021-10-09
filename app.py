@@ -1,5 +1,5 @@
 import json
-from flask import Flask, render_template, redirect, request, session
+from flask import Flask, render_template, redirect, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, emit
 
@@ -24,6 +24,9 @@ class Message(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 
+db.create_all()
+
+
 @app.route('/')
 def index():
     return render_template("index.html")
@@ -36,14 +39,16 @@ def login():
         user = User(name=name)
         db.session.add(user)
         db.session.commit()
-        session['user'] = name
-        return "logged in"
+        dic = dict()
+        dic['id'] = user.id
+        dic['user'] = user.name
+        return json.dumps(dic)
 
 
 @app.route('/message', methods=["POST"])
 def message():
     message = request.json["message"]
-    user = session['user']
+    user = request.json["user"]
     if (message != None):
         newMessage = Message(
             message=message, user=User.query.filter_by(name=user).first())

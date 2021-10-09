@@ -15,7 +15,8 @@ const handleSubmit = (e) => {
     e.preventDefault()
     const message = document.getElementById("message").value
     axios.post('/message', {
-        message: message
+        message: message,
+        user: sessionStorage.getItem("user")
       });
     document.getElementById('message').value = ""
 }
