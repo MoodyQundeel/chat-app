@@ -1,5 +1,6 @@
 import { Button, TextField, Box, FormGroup } from "@mui/material"
 import "../css/LogInPage.css"
+import axios from 'axios'
 
 const LogInPage = (props) => {
     return (
@@ -13,17 +14,11 @@ const LogInPage = (props) => {
 const handleSubmit = (e) => {
     e.preventDefault()
     const name = document.getElementById("name").value
-    let xhr = new XMLHttpRequest()
-    xhr.open("POST", "/register")
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-    xhr.onreadystatechange = function() {
-    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-        localStorage.setItem("user", name);
-        window.location.reload()
-    }
-}
-    xhr.send("name=" + name);
+    axios.post('/login', {
+        name: name
+      });
+    localStorage.setItem('user', name)
+    window.location.reload()
 }
 
 export default LogInPage

@@ -1,0 +1,6 @@
+.message {
+    display: flex;
+    width: auto;
+    margin-bottom: 2rem;
+    align-items: center;
+}

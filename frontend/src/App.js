@@ -1,6 +1,5 @@
 import { React } from 'react'
 import LogInPage from './components/LogInPage';
-import MessageBox from './components/MessageBox'
 import ChatPage from './components/ChatPage'
 
 const App = (props) => {

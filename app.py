@@ -1,13 +1,15 @@
 import json
 from flask import Flask, render_template, redirect, request, session
-from flask.json import jsonify
 from flask_sqlalchemy import SQLAlchemy
+from flask_socketio import SocketIO, emit
+
 
 app = Flask(__name__, static_folder="frontend/build/",
             static_url_path='', template_folder="frontend/build")
 app.secret_key = "123"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///main.db'
 db = SQLAlchemy(app)
+socketio = SocketIO(app)
 
 
 class User(db.Model):
@@ -27,27 +29,28 @@ def index():
     return render_template("index.html")
 
 
-@app.route('/register', methods=["POST"])
-def register():
-    name = request.form["name"]
+@app.route('/login', methods=["POST"])
+def login():
+    name = request.json['name']
     if (name != None):
         user = User(name=name)
         db.session.add(user)
         db.session.commit()
         session['user'] = name
-        return "registered"
+        return "logged in"
 
 
 @app.route('/message', methods=["POST"])
 def message():
-    message = request.form["message"]
+    message = request.json["message"]
     user = session['user']
     if (message != None):
         newMessage = Message(
             message=message, user=User.query.filter_by(name=user).first())
         db.session.add(newMessage)
         db.session.commit()
-        return "message receieved"
+        socketio.emit('message')
+        return 'message recieved'
 
 
 @app.route('/messages', methods=["POST"])
@@ -63,10 +66,18 @@ def fetch_messages():
         msgDict['user'] = msg.user.name
         messagesArray.append(msgDict)
 
-    print(messagesArray)
-
     return json.dumps(messagesArray)
 
 
+@socketio.on('connect')
+def connected():
+    print('Connected')
+
+
+@socketio.on('disconnect')
+def disconnected():
+    print("Disconnected")
+
+
 if __name__ == '__main__':
-    app.run(debug=True, port="5000")
+    app.run(debug=True, host="0.0.0.0", port="5000")

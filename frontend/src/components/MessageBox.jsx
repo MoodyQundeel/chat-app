@@ -1,11 +1,12 @@
 import { Button, TextField, Box, FormGroup } from "@mui/material"
-import "../css/LogInPage.css"
+import "../css/MessageBox.css"
+import axios from 'axios'
 
 const MessageBox = (props) => {
     return (
-        <form method="POST" onSubmit={e => handleSubmit(e)}>
-            <TextField fullWidth="true" variant="outlined" label="Message" id="message"></TextField>
-            <Button sx={{ mt: 3 }} variant="contained" type="submit">Send</Button>
+        <form method="POST" id="messageForm" onSubmit={e => handleSubmit(e)}>
+            <TextField variant="outlined" label="Message" id="message"></TextField>
+            <Button sx={{ ml: 2 }} variant="contained" type="submit" className="sendBtn">Send</Button>
         </form>
     )
 }
@@ -13,16 +14,10 @@ const MessageBox = (props) => {
 const handleSubmit = (e) => {
     e.preventDefault()
     const message = document.getElementById("message").value
-    let xhr = new XMLHttpRequest()
-    xhr.open("POST", "/message")
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-    xhr.onreadystatechange = function() {
-    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-        window.location.reload()
-    }
-}
-    xhr.send("message=" + message);
+    axios.post('/message', {
+        message: message
+      });
+    document.getElementById('message').value = ""
 }
 
 export default MessageBox
