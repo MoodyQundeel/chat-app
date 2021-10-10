@@ -1,19 +1,10 @@
-.message-current-user {
+.message {
     display: flex;
     width: auto;
     max-width: 70%;
     margin-bottom: 1rem;
     align-items: center;
 }
-
-.message-different-user {
-    display: flex;
-    width: auto;
-    max-width: 70%;
-    margin-bottom: 1rem;
-    align-items: center;
-}
-
 p {
     padding: 0.5rem;
     background-color: rgb(81, 81, 240);

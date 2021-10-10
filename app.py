@@ -19,6 +19,7 @@ class Message(db.Model):
     user = db.Column(db.Text, nullable=False)
 
 
+db.drop_all()
 db.create_all()
 
 
