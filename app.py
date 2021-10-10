@@ -1,3 +1,4 @@
+from enum import unique
 import json
 from flask import Flask, render_template, redirect, request
 from flask_sqlalchemy import SQLAlchemy
@@ -12,16 +13,10 @@ db = SQLAlchemy(app)
 socketio = SocketIO(app)
 
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), nullable=False)
-
-
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     message = db.Column(db.Text, nullable=False)
-    user = db.relationship("User", backref="user", lazy=True, uselist=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.Column(db.Text, nullable=False)
 
 
 db.create_all()
@@ -36,12 +31,8 @@ def index():
 def login():
     name = request.json['name']
     if (name != None):
-        user = User(name=name)
-        db.session.add(user)
-        db.session.commit()
         dic = dict()
-        dic['id'] = user.id
-        dic['user'] = user.name
+        dic['user'] = name
         return json.dumps(dic)
 
 
@@ -49,9 +40,9 @@ def login():
 def message():
     message = request.json["message"]
     user = request.json["user"]
-    if (message != None):
+    if (message != None and user != None):
         newMessage = Message(
-            message=message, user=User.query.filter_by(name=user).first())
+            message=message, user=user)
         db.session.add(newMessage)
         db.session.commit()
         socketio.emit('message')
@@ -68,7 +59,7 @@ def fetch_messages():
         msgDict = dict()
         msgDict['id'] = i
         msgDict['message'] = msg.message
-        msgDict['user'] = msg.user.name
+        msgDict['user'] = msg.user
         messagesArray.append(msgDict)
 
     return json.dumps(messagesArray)

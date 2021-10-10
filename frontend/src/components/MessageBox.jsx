@@ -1,12 +1,12 @@
-import { Button, TextField, Box, FormGroup } from "@mui/material"
+import { Button, TextField, Icon } from "@mui/material"
 import "../css/MessageBox.css"
 import axios from 'axios'
 
 const MessageBox = (props) => {
     return (
         <form method="POST" id="messageForm" onSubmit={e => handleSubmit(e)}>
-            <TextField variant="outlined" label="Message" id="message"></TextField>
-            <Button sx={{ ml: 2 }} variant="contained" type="submit" className="sendBtn">Send</Button>
+            <TextField fullWidth="true" autoComplete="off" variant="outlined" label="Message" id="message"></TextField>
+            <Button sx={{ ml: 2 }} variant="contained" size="small" type="submit" className="sendBtn"><Icon>send</Icon></Button>
         </form>
     )
 }

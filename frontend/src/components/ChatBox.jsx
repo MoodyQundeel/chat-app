@@ -6,7 +6,7 @@ import io from 'socket.io-client'
 
 let socket = io('/')
 
-const ChatPage = (props) => {
+const ChatBox = (props) => {
 
     const [messages, setMessages] = useState([])
 
@@ -39,7 +39,7 @@ const ChatPage = (props) => {
         <div className="messages">
                 {
                     messages.map(message =>
-                        <Message text={message.message} user={message.user} />
+                        <Message data={message} />
                     )
                 }
                 <div ref={messagesEndRef} />
@@ -47,4 +47,4 @@ const ChatPage = (props) => {
       )
 }
     
-export default ChatPage
+export default ChatBox
