@@ -75,4 +75,4 @@ def disconnected():
 
 
 if __name__ == '__main__':
-    app.run(port="0.0.0.0", debug="false")
+    app.run(host="0.0.0.0", debug=False)
