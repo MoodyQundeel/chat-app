@@ -9,7 +9,7 @@ const MessageBox = (props) => {
     return (
         <form method="POST" id="messageForm" onSubmit={e => handleSubmit(e)}>
             <TextField fullWidth="true" autoComplete="off" variant="outlined" label="Message" id="message"></TextField>
-            <Button sx={{ ml: 2 }} variant="contained" size="small" type="submit" className="sendBtn"><Icon>send</Icon></Button>
+            <Button sx={{ ml: 2, borderRadius: "50%", minHeight: "55px", minWidth: "55px" }} variant="contained" type="submit" className="sendBtn"><Icon>send</Icon></Button>
         </form>
     )
 }
