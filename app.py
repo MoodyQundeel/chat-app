@@ -1,5 +1,5 @@
 import json
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, emit
 
@@ -15,6 +15,7 @@ class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     message = db.Column(db.Text, nullable=False)
     user = db.Column(db.Text, nullable=False)
+    room = db.Column(db.Integer)
 
 
 db.drop_all()
@@ -29,19 +30,19 @@ def index():
 @app.route('/login', methods=["POST"])
 def login():
     name = request.json['name']
-    if (name != None):
-        dic = dict()
-        dic['user'] = name
-        return json.dumps(dic)
+    room = request.json['room']
+    if (name != None and room != None):
+        return redirect("/")
 
 
 @app.route('/message', methods=["POST"])
 def message():
     message = request.json["message"]
     user = request.json["user"]
+    room = request.json["room"]
     if (message != None and user != None):
         newMessage = Message(
-            message=message, user=user)
+            message=message, user=user, room=room)
         db.session.add(newMessage)
         db.session.commit()
         return 'message recieved'
@@ -49,7 +50,7 @@ def message():
 
 @app.route('/messages', methods=["POST"])
 def fetch_messages():
-    messages = Message.query.all()
+    messages = Message.query.filter_by(room=request.json["room"]).all()
     messagesArray = []
     i = 0
     for msg in messages:
@@ -79,4 +80,4 @@ def messageRecieved():
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", debug=False)
+    app.run(host="0.0.0.0", debug=True)

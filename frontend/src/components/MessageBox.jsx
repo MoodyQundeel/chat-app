@@ -19,7 +19,8 @@ const handleSubmit = (e) => {
     const message = document.getElementById("message").value
     axios.post('/message', {
         message: message,
-        user: sessionStorage.getItem("user")
+        user: sessionStorage.getItem("user"),
+        room: sessionStorage.getItem("room")
       }).then(() => {
             document.getElementById('message').value = "";
             socket.emit('message')

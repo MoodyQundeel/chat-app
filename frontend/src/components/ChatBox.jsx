@@ -26,7 +26,7 @@ const ChatBox = (props) => {
     }, [messages]) 
 
     fetchMessages = () => {
-        axios.post('messages')
+        axios.post('messages', {room: sessionStorage.getItem("room")})
         .then(res => {
             setMessages(res.data)
         })
