@@ -2,7 +2,6 @@ import json
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, emit
-from flask_cors import CORS
 
 app = Flask(__name__, static_folder="frontend/build/",
             static_url_path='', template_folder="frontend/build")
@@ -10,7 +9,6 @@ app.secret_key = "123"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///main.db'
 db = SQLAlchemy(app)
 socketio = SocketIO(app)
-CORS(app)
 
 
 class Message(db.Model):
@@ -77,4 +75,4 @@ def disconnected():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port="0.0.0.0", debug="false")
