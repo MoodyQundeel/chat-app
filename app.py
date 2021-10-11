@@ -44,7 +44,6 @@ def message():
             message=message, user=user)
         db.session.add(newMessage)
         db.session.commit()
-        socketio.emit('message')
         return 'message recieved'
 
 
@@ -74,5 +73,10 @@ def disconnected():
     print("Disconnected")
 
 
+@socketio.on('message')
+def messageRecieved():
+    socketio.emit('messageReceived')
+
+
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", debug=False)
+    app.run(host="0.0.0.0", debug=True)

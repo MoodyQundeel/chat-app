@@ -5,17 +5,14 @@ import "../css/ChatBox.css"
 import io from 'socket.io-client'
 
 let socket = io('/')
+let fetchMessages;
 
 const ChatBox = (props) => {
 
     const [messages, setMessages] = useState([])
 
     useEffect(() => {
-        axios.post('/messages')
-            .then(res => {
-                console.log(res)
-                setMessages(res.data)
-            })
+        fetchMessages()
     }, [])
 
     const messagesEndRef = useRef(null)
@@ -28,12 +25,12 @@ const ChatBox = (props) => {
         scrollToBottom()
     }, [messages]) 
 
-    socket.on('message', () => {
+    fetchMessages = () => {
         axios.post('messages')
-            .then(res => {
-                setMessages(res.data)
-            })
-    })
+        .then(res => {
+            setMessages(res.data)
+        })
+    }
 
     return (
         <div className="messages">
@@ -46,5 +43,9 @@ const ChatBox = (props) => {
             </div>  
       )
 }
-    
+
+socket.on('messageReceived', () => {
+    fetchMessages()
+})
+
 export default ChatBox

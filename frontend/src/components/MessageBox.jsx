@@ -1,6 +1,9 @@
 import { Button, TextField, Icon } from "@mui/material"
 import "../css/MessageBox.css"
 import axios from 'axios'
+import io from 'socket.io-client'
+
+let socket = io('/')
 
 const MessageBox = (props) => {
     return (
@@ -17,8 +20,11 @@ const handleSubmit = (e) => {
     axios.post('/message', {
         message: message,
         user: sessionStorage.getItem("user")
-      });
-    document.getElementById('message').value = ""
+      }).then(() => {
+            document.getElementById('message').value = "";
+            socket.emit('message')
+      })
+    
 }
 
 export default MessageBox
