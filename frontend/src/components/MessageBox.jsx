@@ -8,8 +8,8 @@ let socket = io('/')
 const MessageBox = (props) => {
     return (
         <form method="POST" id="messageForm" onSubmit={e => handleSubmit(e)}>
-            <TextField fullWidth="true" autoComplete="off" variant="outlined" label="Message" id="message"></TextField>
-            <Button sx={{ ml: 2, borderRadius: "50%", minHeight: "55px", minWidth: "55px" }} variant="contained" type="submit" className="sendBtn"><Icon>send</Icon></Button>
+            <TextField fullWidth="true" autoComplete="off" variant="filled" label="Message" id="message"></TextField>
+            <Button sx={{ ml: 2, borderRadius: "50%", minHeight: "40px", minWidth: "40px", maxHeight: "40px", maxWidth: "40px"}} variant="contained" type="submit" className="sendBtn"><Icon sx={{ fontSize: "22px"}}>send</Icon></Button>
         </form>
     )
 }
