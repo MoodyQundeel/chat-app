@@ -23,7 +23,6 @@ const handleSubmit = (e) => {
         room: sessionStorage.getItem("room")
       }).then(() => {
             document.getElementById('message').value = "";
-            socket.emit('message')
       })
     
 }

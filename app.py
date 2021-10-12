@@ -40,12 +40,14 @@ def message():
     message = request.json["message"]
     user = request.json["user"]
     room = request.json["room"]
-    if (message != None and user != None):
+    if (message != None and message != "" and user != None):
         newMessage = Message(
             message=message, user=user, room=room)
         db.session.add(newMessage)
         db.session.commit()
+        socketio.emit('messageReceived')
         return 'message recieved'
+    return 'invalid message'
 
 
 @app.route('/messages', methods=["POST"])
@@ -72,11 +74,6 @@ def connected():
 @socketio.on('disconnect')
 def disconnected():
     print("Disconnected")
-
-
-@socketio.on('message')
-def messageRecieved():
-    socketio.emit('messageReceived')
 
 
 if __name__ == '__main__':
