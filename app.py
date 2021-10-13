@@ -1,14 +1,15 @@
 import json
-from flask import Flask, render_template, request, redirect
+from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO
+from flask_cors import CORS
 
-app = Flask(__name__, static_folder="frontend/build/",
-            static_url_path='', template_folder="frontend/build")
-app.secret_key = "123"
+app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///main.db'
 db = SQLAlchemy(app)
 socketio = SocketIO(app)
+socketio.init_app(app, cors_allowed_origins="*")
 
 
 class Message(db.Model):
@@ -22,17 +23,12 @@ db.drop_all()
 db.create_all()
 
 
-@app.route('/')
-def index():
-    return render_template("index.html")
-
-
-@app.route('/login', methods=["POST"])
-def login():
+@app.route('/join', methods=["POST"])
+def join():
     name = request.json['name']
     room = request.json['room']
     if (name != None and room != None):
-        return redirect("/")
+        return "joined"
 
 
 @app.route('/message', methods=["POST"])
@@ -68,13 +64,13 @@ def fetch_messages():
 
 @socketio.on('connect')
 def connected():
-    print('Connected')
+    print('connected')
 
 
 @socketio.on('disconnect')
 def disconnected():
-    print("Disconnected")
+    print("disconnected")
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", debug=True)
+    socketio.run(app, host="0.0.0.0", debug=False, port=4000)

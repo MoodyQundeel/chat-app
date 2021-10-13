@@ -4,7 +4,7 @@ import Message from './Message'
 import "../css/ChatBox.css"
 import io from 'socket.io-client'
 
-let socket = io('/')
+let socket = io('http://localhost:4000')
 let fetchMessages;
 
 const ChatBox = (props) => {
@@ -26,7 +26,7 @@ const ChatBox = (props) => {
     }, [messages]) 
 
     fetchMessages = () => {
-        axios.post('messages', {room: sessionStorage.getItem("room")})
+        axios.post('http://localhost:4000/messages', {room: sessionStorage.getItem("room")})
         .then(res => {
             setMessages(res.data)
         })
@@ -36,7 +36,7 @@ const ChatBox = (props) => {
         <div className="messages">
                 {
                     messages.map(message =>
-                        <Message data={message} />
+                        <Message key={message.id} data={message} />
                     )
                 }
                 <div ref={messagesEndRef} />
