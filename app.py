@@ -19,10 +19,6 @@ class Message(db.Model):
     room = db.Column(db.Integer)
 
 
-db.drop_all()
-db.create_all()
-
-
 @app.route('/join', methods=["POST"])
 def join():
     name = request.json['name']
